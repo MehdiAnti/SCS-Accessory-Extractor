@@ -43,7 +43,7 @@ python main.py
 3. The program will process the files, clean unnecessary folders, and zip the results.
 4. View progress on the progress bar and check log.txt for detailed logs.
 
-⚠️ Only run one instance at a time to avoid conflicts in temporary folders and log files.
+      ⚠️ Only run one instance at a time to avoid conflicts in temporary folders and log files.
 
 
 ## Thanks to
