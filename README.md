@@ -10,9 +10,6 @@
 - Clean unwanted files while keeping necessary assets.
 - Extract game version from `version.scs`.
 - Zip processed files for easy storage or distribution.
-- User-friendly GUI with progress bar.
-- Logging support (`log.txt`) for tracking processing steps.
-- Runs safely on Windows (requires `converter_pix.exe`).
 
 ## Requirements
 
