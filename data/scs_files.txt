@@ -10,6 +10,7 @@ dlc_iveco_sway.scs
 dlc_volvo_fh_2021.scs
 dlc_volvo_fh_2024.scs
 dlc_daf_xf_electric.scs
+dlc_bus.scs
 dlc_wielton.scs
 dlc_tirsan.scs
 dlc_schwarzmuller.scs
@@ -37,9 +38,12 @@ dlc_peterbilt_389.scs
 dlc_peterbilt_579.scs
 dlc_volvo_vnl.scs
 dlc_volvo_vnl2018.scs
+dlc_volvo_vnl2025.scs
+dlc_volvo_vnr_e.scs
 dlc_westernstar_49x.scs
 dlc_westernstar_57x.scs
 dlc_westernstar_5700xe.scs
+dlc_rt_ford.scs
 dlc_lodeking.scs
 }
 
