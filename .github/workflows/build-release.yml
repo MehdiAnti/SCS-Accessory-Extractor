@@ -1,0 +1,81 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        shell: pwsh
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyinstaller
+
+      - name: Build application
+        shell: pwsh
+        run: |
+          pyinstaller `
+            --noconfirm `
+            --clean `
+            --onedir `
+            --windowed `
+            --name "SCS-Accessory-Extractor" `
+            main.py
+
+      - name: Copy data files
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force "dist/SCS-Accessory-Extractor/data"
+          Copy-Item "data/converter_pix.exe" "dist/SCS-Accessory-Extractor/data/"
+          Copy-Item "data/scs_files.txt" "dist/SCS-Accessory-Extractor/data/"
+
+      - name: Create ZIP
+        shell: pwsh
+        run: |
+          $tag = "${{ github.ref_name }}"
+          Compress-Archive `
+            -Path "dist/SCS-Accessory-Extractor" `
+            -DestinationPath "SCS-Accessory-Extractor-$tag-Windows-x64.zip"
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: SCS-Accessory-Extractor-Windows-x64
+          path: "SCS-Accessory-Extractor-${{ github.ref_name }}-Windows-x64.zip"
+
+      - name: Create or update GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $tag = "${{ github.ref_name }}"
+
+          gh release view "$tag" *> $null
+
+          if ($LASTEXITCODE -ne 0) {
+            gh release create "$tag" `
+              --title "$tag" `
+              --generate-notes
+          }
+
+          gh release upload "$tag" `
+            "SCS-Accessory-Extractor-$tag-Windows-x64.zip" `
+            --clobber
